@@ -1,0 +1,7 @@
+## Interface: 80000
+## Title: QuietPrep
+## Author: Brian Junio
+## Version: 0.1
+## Notes: Mute sounds while in instanced PvP preparation.
+
+QuietPrep.lua

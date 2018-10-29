@@ -1,0 +1,140 @@
+New line of thinking is to mute the sounds when I zone into the 2 specific arenas that contain loud asses.
+
+Basic flow should be something like...
+
+- Check for event of entering instanced PvP
+- toggle Game Sounds (<ctrl> + S) to off
+- when game actually starts (prep phase over), toggle sounds back on
+
+
+
+/run Sound_ToggleMusic();
+/run Sound_ToggleSound();
+
+
+WoW API Links:
+
+Homepage:
+https://wow.gamepedia.com/World_of_Warcraft_API
+
+Arena:
+https://wow.gamepedia.com/World_of_Warcraft_API#Arena_Functions
+
+Location:
+https://wow.gamepedia.com/World_of_Warcraft_API#Location_Functions
+
+Confirm is in Arena:
+http://wowwiki.wikia.com/wiki/API_IsActiveBattlefieldArena
+this will return FALSE if you are in arena prep
+
+Perhaps I can use the IsActiveBattlefieldArena() function to help me toggle sounds...
+If I were to check for a true value return (1), this could be the trigger to enable sounds again.
+
+
+OH WOW DEBUGGING TOOLS
+
+http://wowwiki.wikia.com/wiki/Blizzard_DebugTools
+http://wowwiki.wikia.com/wiki/Blizzard_DebugTools
+http://wowwiki.wikia.com/wiki/Blizzard_DebugTools
+
+
+
+Events that fire when entering Arena:
+
+  self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+  self:RegisterEvent("PLAYER_ENTERING_WORLD", "ZONE_CHANGED_NEW_AREA")
+  self:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS")
+
+
+
+
+  use
+
+QuietPrep_EventFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+QuietPrep_EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD", "ZONE_CHANGED_NEW_AREA")
+QuietPrep_EventFrame:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS")
+
+to know I'm in the arena...  then use
+
+http://wowwiki.wikia.com/wiki/API_IsActiveBattlefieldArena
+
+to check for false 1 0 pending location and turn sounds back on once you return non false
+
+
+Chat with Kaemin today...
+
+register player_enter_world
+build frame when player enter world
+build frame under player enter frame and register required events; instance change, unit aura
+if inInstance PvP, call auraCheck(); else end
+
+auraCheck()
+get Auras, if "Arena Preparation", call soundOff();
+elseif !"Arena Preparation", call soundOn(); end
+
+soundOff()
+GetCVar for Sounds, set var
+if var > 0, set it to 0
+
+soundOn()
+GetCVar for Sounds, set var
+if var < 1, set it to 1
+
+
+
+
+
+
+So...
+
+create main frame
+register "PLAYER_ENTER_WORLD"
+register "UNIT_AURA"
+create function to GetZonePVPInfo()
+if GetZonePVPInfo = "Arena", check Auras, else end
+create function to check
+
+
+Player enters world, build frame to check
+
+
+
+------------------------------------------
+
+Could I just mute    SetCVar("Sound_EnableDialog", 0); to silence the dudes without losing all of the SFX?
+
+To test, I should be able to add a SET Sound_EnableDialog=0 to my client config file...
+
+
+
+
+----------------------------------------------
+
+
+What does Initiialize() look like?
+
+- upon player enter world check for zone = pvp
+- check for aura = arena prep
+- if both of those are true, capture current sound config (on/off) and store as var
+- if sound off, exit
+- if sound on, toggle sound
+- listen for arena opponent update
+- check value of current sound config
+- if current value and saved value same, exit
+- if current value is different, toggle sound
+
+
+Function List:
+
+Initialize() - the driving logic for all of the listed functions
+ToggleSound() - if on, then off : if off, then on
+GetCurrentSound() - returns current SoundFX value from config
+GetAuraCheck() - returns true if Arena Prep aura is active, false otherwise
+
+
+
+
+
+
+
+
