@@ -2,23 +2,27 @@ local QuietPrep_EventFrame = CreateFrame("Frame")
 
 QuietPrep_EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 QuietPrep_EventFrame:RegisterEvent("ARENA_OPPONENT_UPDATE")
-
 QuietPrep_EventFrame:SetScript("OnEvent", QuietPrep_EventHandler)
 
+QuietPrep_SoundFXToggled = false
+
 local function QuietPrep_EventHandler(self, event, ...)
-  if ( event == "PLAYER_ENTERING_WORLD" ) then
-    QuietPrep_Initialize()
-  elseif ( event == "ARENA_OPPONENT_UPDATE" ) then
-    QuietPrep_ToggleSound()
+  if ( event == "PLAYER_ENTERING_WORLD" ) then QuietPrep_Initialize()
+    elseif ( event == "ARENA_OPPONENT_UPDATE" ) then QuietPrep_Finalize() end
   end
 end
 
 local function QuietPrep_Initialize()
-  if ( QuietPrep_CurrentZone("arena") == true and QuietPrep_AuraCheck("Arena Preparation", "player", "NOT_CANCELABLE") == true ) then
-    if ( GetCVar("Sound_EnableSFX") == "0" ) then break else QuietPrep_ToggleSound() end
-  else
-    if ( QuietPrep_SoundFXToggled = true ) then QuietPrep_ToggleSound() end
+  if ( GetCVar("Sound_EnableSFX") == "0" ) then return
+    elseif ( QuietPrep_CurrentZone("arena") == true and QuietPrep_AuraCheck("Arena Preparation", "player", "NOT_CANCELABLE") == true ) then
+      QuietPrep_ToggleSound()
+      QuietPrep_SoundFXToggled = true
+    end
   end
+end
+
+local function QuietPrep_Finalize()
+  if ( QuietPrep_SoundFXToggled == true ) then QuietPrep_ToggleSound() end
 end
 
 local function QuietPrep_CurrentZone(zone_type)
@@ -29,10 +33,6 @@ end
 local function QuietPrep_AuraCheck(aura, unit, mod)
   local name = AuraUtil.FindAuraByName(aura, unit, mod)
   if ( name == aura ) then return true else return false end
-end
-
-local function QuietPrep_PlayerSoundCheck()
-
 end
 
 local function QuietPrep_ToggleSound()

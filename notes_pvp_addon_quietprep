@@ -133,7 +133,25 @@ GetAuraCheck() - returns true if Arena Prep aura is active, false otherwise
 
 
 
+When Player enters world, world is arena, player has aura
 
+check their current sound settings
+
+if they are muted, exit script
+
+if they are NOT muted, toggle them to muted
+
+
+
+
+is it safe to assume that if they are not muted when user enters arena w/ aura
+that we will toggle twice no matter what?
+
+Meaning, if its already off and I exit, cya later - do nothing
+but if they have it on, I'll be turning it off and if I turn it off, I ened to turn it back on...
+
+so, I just need to check if its off once, rigth at the start of my script, if its not, then I toggle twice
+not based on a checksum or TRUE FALSE value, but based on the check for isMuted()...  no need to store a var
 
 
 
