@@ -4,7 +4,7 @@ QuietPrep_EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 QuietPrep_EventFrame:RegisterEvent("ARENA_OPPONENT_UPDATE")
 QuietPrep_EventFrame:SetScript("OnEvent", QuietPrep_EventHandler)
 
-QuietPrep_SoundFXToggled = false
+local QuietPrep_SoundFXToggled = QuietPrep_SoundFXToggled
 
 local function QuietPrep_EventHandler(self, event, ...)
   if ( event == "PLAYER_ENTERING_WORLD" ) then QuietPrep_Initialize()
